@@ -1,6 +1,7 @@
 import Task from "../task/Task";
-import { useState, useContext } from "react";
+import { useState, useContext, useMemo } from "react";
 import { TaskDataContext } from "../../context/TaskDataContext";
+import { useToast } from "../../context/ToastContext";
 
 const FILTERS = [
   {
@@ -22,21 +23,24 @@ const FILTERS = [
 
 export default function Card() {
   const [statusBtn, setStatusBtn] = useState("All");
+  const { showToast } = useToast();
   const [taskTitle, setTaskTitle] = useState("");
   const { taskData, setTaskData } = useContext(TaskDataContext);
 
   // منطق الفلترة الاحترافي
-  const filteredTasks = taskData.filter((task) => {
-    if (statusBtn === "Completed") return task.isCompleted;
-    if (statusBtn === "Incomplete") return !task.isCompleted;
-    return true; // All
-  });
+  const filteredTasks = useMemo(() => {
+    return taskData.filter((task) => {
+      if (statusBtn === "Completed") return task.isCompleted;
+      if (statusBtn === "Incomplete") return !task.isCompleted;
+      return true; // All
+    });
+  }, [taskData, statusBtn]);
 
   function handleAddTask() {
     if (!taskTitle.trim()) return;
 
     const newTask = {
-      id: Date.now(), // استخدام Date.now أضمن بكثير من length + 1 لمنع تكرار الـ ID عند الحذف
+      id: Date.now(),
       title: taskTitle.trim(),
       description: "New task added.",
       isCompleted: false,
@@ -44,6 +48,14 @@ export default function Card() {
 
     setTaskData((prev) => [...prev, newTask]);
     setTaskTitle("");
+    showToast("Task added successfully!");
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddTask();
+    }
   }
 
   return (
@@ -73,7 +85,7 @@ export default function Card() {
         {/* عرض المهام المفلترة */}
         <div className="flex flex-col gap-3 my-4 overflow-y-auto p-1">
           {filteredTasks.length > 0 ? (
-            filteredTasks.map((task) => <Task key={task.id} todo={task} />) 
+            filteredTasks.map((task) => <Task key={task.id} todo={task} />)
           ) : (
             <p className="text-gray-400 italic">No tasks found.</p>
           )}
@@ -92,6 +104,7 @@ export default function Card() {
             placeholder="Enter task title..."
             value={taskTitle}
             onChange={(e) => setTaskTitle(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
         </div>
       </div>

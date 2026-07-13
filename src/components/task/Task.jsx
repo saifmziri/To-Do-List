@@ -8,25 +8,32 @@ import { useState, useContext } from "react";
 import { TaskDataContext } from "../../context/TaskDataContext";
 import Confirm from "./../../confirm/Confirm";
 import UpdateModal from "./../../UpdateModalTask/UpdateModal";
+import { useToast } from "../../context/ToastContext"; // Import the custom hook
 
 export default function Task({ todo }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const { showToast } = useToast();
   const { setTaskData } = useContext(TaskDataContext);
 
   function handleCheckClick() {
+    const newStatus = !todo.isCompleted;
+
     setTaskData((prev) =>
       prev.map((task) =>
-        task.id === todo.id
-          ? { ...task, isCompleted: !task.isCompleted }
-          : task,
+        task.id === todo.id ? { ...task, isCompleted: newStatus } : task,
       ),
     );
-  }
 
+    showToast(
+      newStatus ? "Task completed successfully!" : "Task marked as incomplete.",
+      newStatus ? "success" : "error",
+    );
+  }
   function handleConfirmDelete() {
     setTaskData((prev) => prev.filter((task) => task.id !== todo.id));
     setShowConfirm(false);
+    showToast("Task deleted.", "error");
   }
 
   function handleConfirmUpdate(updatedTitle, updatedDescription) {
@@ -38,6 +45,7 @@ export default function Task({ todo }) {
       ),
     );
     setShowUpdateModal(false);
+    showToast("Task updated successfully!");
   }
 
   return (
