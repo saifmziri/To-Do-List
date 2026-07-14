@@ -11,7 +11,8 @@ import Toast from "../toast/Toast";
 
 const ToastContext = createContext({});
 
-//children: ava aw hami tshtet nav (ToastProvider) da d init waki ma d app da gazi kriye
+//children: ava aw hami tshtet nav (ToastProvider) <ToastProvider>Har tshtak dnavda d bita child</ToastProvider> da d init
+//  waki ma d app da gazi kriye
 export const ToastProvider = ({ children }) => {
   const [toast, setToast] = useState({
     open: false,

@@ -4,46 +4,44 @@ import {
   faPenToSquare,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useContext } from "react";
-import { TaskDataContext } from "../../context/TaskDataContext";
+import { useState } from "react";
+import { useTaskData } from "../../context/TaskDataContext";
 import Confirm from "./../../confirm/Confirm";
 import UpdateModal from "./../../UpdateModalTask/UpdateModal";
-import { useToast } from "../../context/ToastContext"; // Import the custom hook
+import { useToast } from "../../context/ToastContext";
 
 export default function Task({ todo }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const { showToast } = useToast();
-  const { setTaskData } = useContext(TaskDataContext);
+  const { dispatch } = useTaskData();
 
   function handleCheckClick() {
     const newStatus = !todo.isCompleted;
 
-    setTaskData((prev) =>
-      prev.map((task) =>
-        task.id === todo.id ? { ...task, isCompleted: newStatus } : task,
-      ),
-    );
+    dispatch({ type: "TOGGLE_TASK", payload: { id: todo.id } });
 
     showToast(
       newStatus ? "Task completed successfully!" : "Task marked as incomplete.",
       newStatus ? "success" : "error",
     );
   }
+
   function handleConfirmDelete() {
-    setTaskData((prev) => prev.filter((task) => task.id !== todo.id));
+    dispatch({ type: "DELETE_TASK", payload: { id: todo.id } });
     setShowConfirm(false);
     showToast("Task deleted.", "error");
   }
 
   function handleConfirmUpdate(updatedTitle, updatedDescription) {
-    setTaskData((prev) =>
-      prev.map((task) =>
-        task.id === todo.id
-          ? { ...task, title: updatedTitle, description: updatedDescription }
-          : task,
-      ),
-    );
+    dispatch({
+      type: "UPDATE_TASK",
+      payload: {
+        id: todo.id,
+        title: updatedTitle,
+        description: updatedDescription,
+      },
+    });
     setShowUpdateModal(false);
     showToast("Task updated successfully!");
   }
@@ -70,8 +68,8 @@ export default function Task({ todo }) {
       )}
 
       <div
-        className={`flex flex-row-reverse items-center justify-between text-white rounded-md p-4 transition-all duration-300
-        ${todo.isCompleted ? "bg-gray-500 line-through opacity-70" : "bg-amber-900"}`}
+        className={`flex flex-row-reverse items-center justify-between text-white rounded-md p-4 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]
+          hover:shadow-xl ${todo.isCompleted ? "bg-gray-500 line-through opacity-70" : "bg-amber-900"}`}
       >
         {/* النصوص */}
         <div className="text-right">
