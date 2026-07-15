@@ -1,6 +1,7 @@
 import Task from "../task/Task";
 import { useState, useMemo } from "react";
-import { useTaskData } from "../../context/TaskDataContext";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask } from "../../features/tasks/taskSlice";
 import { useToast } from "../../context/ToastContext";
 
 const FILTERS = [
@@ -25,7 +26,11 @@ export default function Card() {
   const [statusBtn, setStatusBtn] = useState("All");
   const { showToast } = useToast();
   const [taskTitle, setTaskTitle] = useState("");
-  const { taskData, dispatch } = useTaskData();
+
+  const taskData = useSelector((state) => {
+    return state.tasks.tasks;
+  });
+  const dispatch = useDispatch();
 
   const filteredTasks = useMemo(() => {
     return taskData
@@ -40,7 +45,7 @@ export default function Card() {
   function handleAddTask() {
     if (!taskTitle.trim()) return;
 
-    dispatch({ type: "ADD_TASK", payload: { taskTitle } });
+    dispatch(addTask({ taskTitle }));
     setTaskTitle("");
     showToast("Task added successfully!");
   }

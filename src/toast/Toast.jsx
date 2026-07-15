@@ -28,7 +28,10 @@ export default function Toast({ open, message, type = "success" }) {
         animate-fade-in-down transition-all duration-300 max-w-sm ${style.className}`}
       role="alert"
     >
-      <FontAwesomeIcon icon={style.icon} className={`text-lg ${style.iconClass}`} />
+      <FontAwesomeIcon
+        icon={style.icon}
+        className={`text-lg ${style.iconClass}`}
+      />
       <p className="font-medium text-sm text-right flex-1">{message}</p>
     </div>
   );

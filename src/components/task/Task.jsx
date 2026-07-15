@@ -5,7 +5,8 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useTaskData } from "../../context/TaskDataContext";
+import { useDispatch } from "react-redux";
+import { toggleTask, deleteTask, updateTask } from "../../features/tasks/taskSlice";
 import Confirm from "./../../confirm/Confirm";
 import UpdateModal from "./../../UpdateModalTask/UpdateModal";
 import { useToast } from "../../context/ToastContext";
@@ -14,12 +15,12 @@ export default function Task({ todo }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const { showToast } = useToast();
-  const { dispatch } = useTaskData();
+  const dispatch = useDispatch();
 
   function handleCheckClick() {
     const newStatus = !todo.isCompleted;
 
-    dispatch({ type: "TOGGLE_TASK", payload: { id: todo.id } });
+    dispatch(toggleTask({ id: todo.id }));
 
     showToast(
       newStatus ? "Task completed successfully!" : "Task marked as incomplete.",
@@ -28,20 +29,19 @@ export default function Task({ todo }) {
   }
 
   function handleConfirmDelete() {
-    dispatch({ type: "DELETE_TASK", payload: { id: todo.id } });
+    dispatch(deleteTask({ id: todo.id }));
     setShowConfirm(false);
     showToast("Task deleted.", "error");
   }
 
   function handleConfirmUpdate(updatedTitle, updatedDescription) {
-    dispatch({
-      type: "UPDATE_TASK",
-      payload: {
+    dispatch(
+      updateTask({
         id: todo.id,
         title: updatedTitle,
         description: updatedDescription,
-      },
-    });
+      }),
+    );
     setShowUpdateModal(false);
     showToast("Task updated successfully!");
   }
@@ -71,13 +71,11 @@ export default function Task({ todo }) {
         className={`flex flex-row-reverse items-center justify-between text-white rounded-md p-4 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]
           hover:shadow-xl ${todo.isCompleted ? "bg-gray-500 line-through opacity-70" : "bg-amber-900"}`}
       >
-        {/* النصوص */}
         <div className="text-right">
           <h2 className="text-xl font-bold">{todo.title}</h2>
           <p className="text-gray-300 text-sm mt-1">{todo.description}</p>
         </div>
 
-        {/* الأزرار */}
         <div className="flex flex-row-reverse gap-2">
           <button
             type="button"
