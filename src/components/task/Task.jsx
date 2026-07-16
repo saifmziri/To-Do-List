@@ -68,41 +68,65 @@ export default function Task({ todo }) {
       )}
 
       <div
-        className={`flex flex-row-reverse items-center justify-between text-white rounded-md p-4 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]
-          hover:shadow-xl ${todo.isCompleted ? "bg-gray-500 line-through opacity-70" : "bg-amber-900"}`}
+        className={`group relative flex items-center justify-between rounded-lg pl-5 pr-4 py-4 border transition-all duration-200
+          ${
+            todo.isCompleted
+              ? "bg-canvas/60 border-border opacity-70"
+              : "bg-paper border-border hover:border-primary/30 hover:shadow-[0_8px_20px_-12px_rgba(11,18,32,0.25)] hover:-translate-y-0.5"
+          }`}
       >
-        <div className="text-right">
-          <h2 className="text-xl font-bold">{todo.title}</h2>
-          <p className="text-gray-300 text-sm mt-1">{todo.description}</p>
+        <span
+          className={`absolute left-0 top-0 h-full w-1 rounded-l-lg transition-colors duration-200 ${
+            todo.isCompleted ? "bg-success" : "bg-primary"
+          }`}
+        />
+
+        <div className="min-w-0">
+          <h2
+            className={`text-[15px] font-semibold text-ink truncate ${
+              todo.isCompleted ? "line-through decoration-muted" : ""
+            }`}
+          >
+            {todo.title}
+          </h2>
+          {todo.description ? (
+            <p
+              className={`text-sm text-muted mt-0.5 ${
+                todo.isCompleted ? "line-through decoration-border" : ""
+              }`}
+            >
+              {todo.description}
+            </p>
+          ) : null}
         </div>
 
-        <div className="flex flex-row-reverse gap-2">
+        <div className="flex gap-1.5 shrink-0">
           <button
             type="button"
             onClick={handleCheckClick}
-            className={`rounded-md p-2 text-white transition-colors cursor-pointer 
-              ${todo.isCompleted ? "bg-green-700 hover:bg-green-800" : "bg-green-500 hover:bg-green-600"}`}
+            className={`rounded-md p-2 text-white transition-all duration-150 hover:scale-105 active:scale-95 cursor-pointer
+              ${todo.isCompleted ? "bg-success hover:bg-success-deep" : "bg-success/85 hover:bg-success"}`}
             aria-label="Toggle Complete task"
           >
-            <FontAwesomeIcon icon={faCheckDouble} />
+            <FontAwesomeIcon icon={faCheckDouble} size="sm" />
           </button>
 
           <button
             type="button"
             onClick={() => setShowUpdateModal(true)}
-            className="rounded-md bg-blue-500 p-2 text-white transition-colors hover:bg-blue-600 cursor-pointer"
+            className="rounded-md bg-primary p-2 text-white transition-all duration-150 hover:bg-primary-deep hover:scale-105 active:scale-95 cursor-pointer"
             aria-label="Edit task"
           >
-            <FontAwesomeIcon icon={faPenToSquare} />
+            <FontAwesomeIcon icon={faPenToSquare} size="sm" />
           </button>
 
           <button
             type="button"
             onClick={() => setShowConfirm(true)}
-            className="rounded-md bg-red-500 p-2 text-white transition-colors hover:bg-red-600 cursor-pointer"
+            className="rounded-md bg-danger p-2 text-white transition-all duration-150 hover:bg-danger-deep hover:scale-105 active:scale-95 cursor-pointer"
             aria-label="Delete task"
           >
-            <FontAwesomeIcon icon={faXmark} />
+            <FontAwesomeIcon icon={faXmark} size="sm" />
           </button>
         </div>
       </div>

@@ -1,24 +1,27 @@
+import { createPortal } from "react-dom";
+
 export default function Confirm({ title, description, onConfirm, onCancel }) {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md"> 
-        <h2 className="text-xl font-bold mb-4">{title}</h2>
-        <p className="mb-6">{description}</p>
-        <div className="flex justify-end gap-4">
+  return createPortal(
+    <div className="animate-backdrop-in fixed inset-0 z-50 flex items-center justify-center bg-ink/50 backdrop-blur-sm">
+      <div className="animate-modal-in w-full max-w-md rounded-2xl border border-border bg-paper p-6 shadow-[0_24px_60px_-20px_rgba(11,18,32,0.35)]">
+        <h2 className="font-display text-xl font-bold text-ink">{title}</h2>
+        <p className="mt-2 text-sm text-muted">{description}</p>
+        <div className="mt-6 flex justify-end gap-3">
           <button
-            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 cursor-pointer"
+            className="rounded-lg border border-border bg-canvas px-4 py-2 text-sm font-semibold text-ink transition-colors duration-150 hover:bg-border cursor-pointer"
             onClick={onCancel}
           >
             Cancel
           </button>
           <button
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 cursor-pointer"
+            className="rounded-lg bg-danger px-4 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:bg-danger-deep cursor-pointer"
             onClick={onConfirm}
           >
             Confirm
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
