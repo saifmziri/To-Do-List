@@ -2,21 +2,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap");
 
 @theme {
-  --color-ink: #0b1220;
-  --color-canvas: #eef1f6;
-  --color-paper: #ffffff;
-  --color-primary: #1b3358;
-  --color-primary-deep: #12233f;
-  --color-accent: #b8873b;
-  --color-accent-soft: #f4e9d8;
-  --color-success: #1f7a5c;
-  --color-success-deep: #175f49;
-  --color-success-soft: #e3f2ec;
-  --color-danger: #b3432b;
-  --color-danger-deep: #8f351f;
-  --color-danger-soft: #f7e7e2;
-  --color-border: #e3e7ef;
-  --color-muted: #64748b;
+  /* Ocean Blue Theme - Dark & Professional */
+  --color-ink: #ffffff;
+  --color-canvas: #0a0f1a;
+  --color-paper: #0f1929;
+  
+  /* Primary - Deep Ocean Blue */
+  --color-primary: #0066cc;
+  --color-primary-deep: #004499;
+  
+  /* Accent - Bright Cyan */
+  --color-accent: #00d9ff;
+  --color-accent-soft: #003d52;
+  
+  /* Success - Teal */
+  --color-success: #00c9a7;
+  --color-success-deep: #009980;
+  --color-success-soft: #001a14;
+  
+  /* Danger - Coral Red */
+  --color-danger: #ff5757;
+  --color-danger-deep: #cc3333;
+  --color-danger-soft: #330a0a;
+  
+  /* Border & Muted */
+  --color-border: #1a2845;
+  --color-muted: #8ca3c0;
 
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-mono-data: "IBM Plex Mono", ui-monospace, monospace;
@@ -26,10 +37,10 @@ body {
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   background-color: var(--color-canvas);
   background-image:
-    radial-gradient(circle at 12% 8%, rgba(27, 51, 88, 0.06), transparent 40%),
+    radial-gradient(circle at 12% 8%, rgba(0, 102, 204, 0.1), transparent 40%),
     radial-gradient(
       circle at 88% 92%,
-      rgba(184, 135, 59, 0.07),
+      rgba(0, 217, 255, 0.08),
       transparent 42%
     );
   background-attachment: fixed;
